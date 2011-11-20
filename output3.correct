@@ -1,0 +1,82 @@
+***************
+*    PRINT:   *
+***************
+Bucket: 3
+Ulysses    Rodriguez  346-388-0489
+
+Bucket: 5
+Griffin    Wilson     473-200-5665
+
+Bucket: 6
+Aidan      Johnson    186-230-3632
+
+Bucket: 10
+Rhianna    Martinez   988-506-4811
+
+Bucket: 12
+Troy       Clark      771-123-9223
+
+Bucket: 13
+Wyatt      Lee        261-865-9144
+Quinton    Garcia     975-038-9504
+
+Bucket: 14
+Zachary    Hall       348-275-9129
+Ike        Taylor     475-790-0999
+Virginia   Lewis      689-699-6623
+Felicia    Miller     876-280-0875
+
+Bucket: 15
+Deborah    Brown      844-829-1594
+
+Bucket: 16
+Orlando    Martin     623-253-5822
+Krista     Thomas     749-347-0588
+
+Bucket: 18
+James      Anderson   484-785-7511
+John       Smith      785-984-5034
+
+Bucket: 19
+Elvis      Davis      321-010-6704
+
+Bucket: 21
+Caleb      Jones      625-103-4893
+
+Bucket: 22
+Mackenzie  White      867-969-5609
+
+Bucket: 23
+Pearl      Thompson   279-988-6933
+
+Bucket: 25
+Nadia      Harris     238-014-2751
+
+Bucket: 26
+Hannah     Moore      616-008-3702
+
+Bucket: 27
+Betty      Williams   649-366-0674
+Lucas      Jackson    842-037-7256
+
+Bucket: 28
+Xavier     Walker     843-477-1477
+
+Bucket: 29
+Shakira    Robinson   670-420-6677
+
+
+***************
+*   SEARCH: 1862303632
+***************
+Entry found!
+Aidan      Johnson    186-230-3632
+
+***************
+*   SEARCH: 1234567890
+***************
+Entry not found
+***************
+* LOAD FACTOR *
+***************
+Load factor: 0.866667

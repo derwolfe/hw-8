@@ -1,0 +1,4 @@
+print
+search 1862303632 
+search 1234567890
+load_factor
