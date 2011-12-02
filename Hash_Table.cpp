@@ -17,10 +17,52 @@ using namespace std;
  * get_load_factor
  * operator<<
  */
+
+/* constructor - allocates SIZE buckets, sets table size as an array, and elements */
+Hash_Table::Hash_Table(size)
+{
+  buckets[size]; /* set the size of the array to hold buckets*/
+  /* next, allocate memory for the buckets and shove them into the table */
+  int i = 0;  
+  while (i <= size - 1) {
+    buckets[i] = new Bucket;
+  }
+  table_size = size;
+  elements = 0;
+} 
+
+/* Destructor - deallocate all memory, zero/Null out private vars
+ */
+Hash_Table::~Hash_Table()
+{ //also is buckets an array of ptrs? methinks yes.
+  int i = 0;
+  while (i <= size - 1) {
+    delete buckets[i];
+  }
+  delete buckets;
+  buckets = NULL;
+  table_size = 0;
+  elements = 0;
+}
+
+/* insert a new PB_entry */
+void Hash_Table::insert(string first, string last, string number)
+{
+  /*
+   * Hash the number to obtain the key value. Case the uint32_t to an int
+   * to use it as an array value. 
+   */
+  int bucket_id = int(SuperFastHash(number, HASH_FUNC_CONST));
+  buckets[bucket_id]->sorted_insert(first, last, number);
+}
+  
+
+ostream& operator<<(ostream &os, Hash_Table &in_table)
+{ 
     os << "Entry found!" << endl;
     os << "Entry not found" << endl;
     os << "Bucket: " << i << endl;
-
+}
 /*
  * Hash function and get16bits. Open source under LGPL 2.1
  *
