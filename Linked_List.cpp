@@ -54,7 +54,7 @@ void Linked_List::sorted_insert(PB_entry* in_entry)
    * First, allocate the node, set its pointers.
    */
   Node* cur = new Node;   
-  cur->item = in_entry;
+  cur->entry = in_entry;
   cur->next = NULL;
   
 //  /* Before searching, let's check if the list is empty. If so, set head,
@@ -72,7 +72,7 @@ void Linked_List::sorted_insert(PB_entry* in_entry)
   while (check != NULL) {
     /* Change this to last_name to test for name
      * if the new entry is LESS than or EQUAL to the current entry, insert it.*/
-    if (in_entry->key.compare(check->key) <= 0) { 
+    if (in_entry->get_key().compare(check->entry->get_key()) <= 0) { 
       break;
     } // otherwise, keep a trail.
     prev = check;
@@ -100,12 +100,12 @@ PB_entry* Linked_List::retrieve(string key)
     return NULL; //or barf/throw exception
   } // else size > 0;
   while (cur)
-   if (cur->item.compare(key) == 0) {
-     return cur->item;
+   if (cur->entry->get_key().compare(key) == 0) {
+     return cur->entry;
    } else {
      cur = cur->next;
    }
-  /* if here then the item was NOT found, so return NULL ptr or an exception */
+  /* if here then the entry was NOT found, so return NULL ptr or an exception */
   return NULL;
 }
 
