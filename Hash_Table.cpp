@@ -22,7 +22,7 @@ using namespace std;
 /* constructor - allocates SIZE buckets, sets table size as an array, and elements */
 Hash_Table::Hash_Table(int size)
 {
-  buckets[size]; /* set the size of the array to hold buckets*/
+  //buckets[size]; /* set the size of the array to hold buckets*/
   /* next, allocate memory for the buckets and shove them into the table
    * buckets* is an array of pointers to buckets.
    */
@@ -49,26 +49,19 @@ void Hash_Table::insert(string first, string last, string number)
 {
   /* instantiate a new PB object
    *
-   * Hash the number to obtain the key value. Case the uint32_t to an int
-   * to use it as an array value.
-   * superfasthash expects a char string, not a string. So strncpy will need
-   * to be used. 
+   * Hash the number to obtain the key value. 
+   * superfasthash expects a char string, not a string. 
+   * use c_str to change the string to a cstring
    */
   PB_entry* in_entry = new PB_entry(first, last, number);
-  
-  /* this shouldn't be necessary - the goal is to 
-   * get the right amount of digits for the array 
-   */  
-  int bucket_id = fabs(SuperFastHash(number.c_str(), 10));
+  /* 
+   * take hash modulo table size to get a usable bucket_id
+   */
+  int bucket_id = SuperFastHash(number.c_str(), 10) % table_size;
   /* 
    * Sanitize the hash/bucket id, by making it $SIZE number of digits long
    * make sure that all buckets in the table can be accessed (bucket 0);
    */
-  while (bucket_id >= table_size) {
-    bucket_id /= 10;
-  }
-  bucket_id--;   
-  /* add the item to the specified bucket */
   buckets[bucket_id]->insert(in_entry);
   elements++;
   return;
@@ -84,13 +77,7 @@ void Hash_Table::search(string key, ostream& os)
    * The overloaded output operator for PB entry will spit the 
    * entry's contens out. 
    */
-  int bucket_id = fabs(SuperFastHash(key.c_str(), 10)); 
-  bucket_id--; /* this way bucket 0 will be accessed */  
-  /* this shouldn't be necessary - the goal is to get the right amount of digits for the array */ 
-  while (bucket_id >= table_size) {
-    bucket_id /= 10;
-  }
- 
+  int bucket_id = SuperFastHash(key.c_str(), 10) % table_size;
   PB_entry* result = buckets[bucket_id]->search(key); 
   if (result == NULL) {
     os << "Entry not found" << endl;
@@ -106,16 +93,10 @@ double Hash_Table::get_load_factor()
   return (elements / table_size); /* ex. 40 elements, 10 buckets, load factor of 4. */
 }
 
-int Hash_Table::get_size()
-{
-  return table_size;
-}
-
 ostream& operator<<(ostream &os, Hash_Table &in_table)
 { 
   int inc = 0;
-  int t_size = in_table.get_size();
-  while (inc < t_size) { 
+  while (inc < in_table.table_size) { 
     /* use the overloaded output operator from bucket */
     os << in_table.buckets[inc]; 
     inc++;
@@ -123,6 +104,7 @@ ostream& operator<<(ostream &os, Hash_Table &in_table)
   return os;
     
 }
+
 /*
  * Hash function and get16bits. Open source under LGPL 2.1
  *
