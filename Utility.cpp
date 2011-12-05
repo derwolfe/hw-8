@@ -12,8 +12,12 @@ void process_phonebook_db(string filename, Hash_Table* hash_table)
   while (!fin.eof()) {
     /*
      * IMPLEMENT ME
+     * Create new PB entry objects in the hashtable.
+     * Since there are no comments or empty lines in the input file there is
+     * no need to handle them.
      */
     fin >> firstname >> lastname >> number;
+    hash_table->insert(firstname, lastname, number);
   }
 
   fin.close();
@@ -39,7 +43,9 @@ void process_phonebook_cmd(string filename, Hash_Table* hash_table)
 
         /*
          * IMPLEMENT ME
+         * search goes to output stream, should it be os/cout?
          */
+        hash_table->search(key, cout);
         break;
       case PRINT:
         cout << "***************" << endl;
@@ -48,7 +54,10 @@ void process_phonebook_cmd(string filename, Hash_Table* hash_table)
 
         /*
          * IMPLEMENT ME
+         * use the overloaded << operator to print
          */
+
+        cout << *hash_table << endl;
         break;
       case LOAD_FACTOR:
         cout << "***************" << endl;
@@ -58,6 +67,7 @@ void process_phonebook_cmd(string filename, Hash_Table* hash_table)
         /*
          * IMPLEMENT ME
          */
+        load_factor = hash_table->get_load_factor();
         cout << "Load factor: " << load_factor << endl;
         break;
       case INVALID:

@@ -10,17 +10,18 @@
 class Hash_Table
 {
   private:
-    Bucket* buckets;
+    Bucket* buckets [];
     int table_size;
     int elements;
 
   public:
-    Hash_Table(int size = 10);
+    Hash_Table(int size = 10); // default value
     ~Hash_Table();
     
     void insert(std::string first, std::string last, std::string number);
     void search(std::string key, std::ostream& os);
     double get_load_factor();
+    int get_size();
     friend std::ostream& operator<<(std::ostream &os, Hash_Table &hash_table);
 
   private:

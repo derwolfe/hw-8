@@ -66,11 +66,12 @@ ostream& operator<<(ostream &os, Bucket &bucket)
    * IMPLEMENT ME 
    * use the LL print method to print the contents of the bucket.
   */
-  if (get_size() == 0) {
+  if (bucket.get_size() == 0) {
     os << "is empty" << endl;
   } else {
     bucket.chain->print(os);
   return os;
+  }
 }
 
 

@@ -19,13 +19,15 @@ using namespace std;
  */
 
 /* constructor - allocates SIZE buckets, sets table size as an array, and elements */
-Hash_Table::Hash_Table(size)
+Hash_Table::Hash_Table(int size)
 {
   buckets[size]; /* set the size of the array to hold buckets*/
-  /* next, allocate memory for the buckets and shove them into the table */
+  /* next, allocate memory for the buckets and shove them into the table
+   * buckets* is an array of pointers to buckets.
+   */
   int i = 0;  
   while (i <= size - 1) {
-    buckets[i] = new Bucket;
+    buckets[i] = new Bucket; 
   }
   table_size = size;
   elements = 0;
@@ -34,13 +36,8 @@ Hash_Table::Hash_Table(size)
 /* Destructor - deallocate all memory, zero/Null out private vars
  */
 Hash_Table::~Hash_Table()
-{ //also is buckets an array of ptrs? methinks yes.
-  int i = 0;
-  while (i <= size - 1) {
-    delete buckets[i];
-  }
-  delete buckets;
-  buckets = NULL;
+{ 
+  delete [] buckets; /* deallocate array, no need to loop through and delete elements */
   table_size = 0;
   elements = 0;
 }
@@ -48,20 +45,64 @@ Hash_Table::~Hash_Table()
 /* insert a new PB_entry */
 void Hash_Table::insert(string first, string last, string number)
 {
-  /*
+  /* instantiate a new PB object
+   *
    * Hash the number to obtain the key value. Case the uint32_t to an int
-   * to use it as an array value. 
+   * to use it as an array value.
+   * superfasthash expects a char string, not a string. So strncpy will need
+   * to be used. 
    */
-  int bucket_id = int(SuperFastHash(number, HASH_FUNC_CONST));
-  buckets[bucket_id]->sorted_insert(first, last, number);
+  PB_entry* in_entry = new PB_entry(first, last, number);
+
+  int bucket_id = SuperFastHash(number.c_str(), 10);
+  /* add the item to the specified bucket */
+  buckets[bucket_id]->insert(in_entry);
+  elements++;
+  return;
 }
   
+void Hash_Table::search(string key, ostream& os)
+{
+  int bucket_id = SuperFastHash(key.c_str(), 10); /* find the bucket where it should be */
+  /*use the bucket's search function and return the node
+   * this will call the LL retrieve function. If the item is not found, 
+   * it will return a NULL ptr.
+   *
+   * if the item is found it will return a pointer to the PB_entry
+   * The overloaded output operator for PB entry will spit the 
+   * entry's contens out.
+   * */
+  PB_entry* result = buckets[bucket_id]->search(key); 
+  if (result == NULL) {
+    os << "Entry not found" << endl;
+  } else if (result != NULL) {
+    os << "Entry found!" << endl;
+    os << "Bucket: " << bucket_id << endl;
+    os << result << endl;
+  }
+}
+
+double Hash_Table::get_load_factor()
+{
+  return (elements / table_size); /* ex. 40 elements, 10 buckets, load factor of 4. */
+}
+
+int Hash_Table::get_size()
+{
+  return table_size;
+}
 
 ostream& operator<<(ostream &os, Hash_Table &in_table)
 { 
-    os << "Entry found!" << endl;
-    os << "Entry not found" << endl;
-    os << "Bucket: " << i << endl;
+  int inc = 0;
+  int t_size = in_table.get_size();
+  while (inc < t_size) { 
+    /* use the overloaded output operator from bucket */
+    os << in_table.buckets[inc]; 
+    inc++;
+  }
+  return os;
+    
 }
 /*
  * Hash function and get16bits. Open source under LGPL 2.1
