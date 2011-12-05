@@ -55,13 +55,19 @@ void Hash_Table::insert(string first, string last, string number)
    * to be used. 
    */
   PB_entry* in_entry = new PB_entry(first, last, number);
-   /* this shouldn't be necessary - the goal is to get the right amount of digits for the array */  
+  
+  /* this shouldn't be necessary - the goal is to 
+   * get the right amount of digits for the array 
+   */  
   int bucket_id = fabs(SuperFastHash(number.c_str(), 10));
-  /* sanitize the hash/bucket id, by making it $SIZE number of digits long */
-  bucket_id--; /* make sure that all buckets in the table can be accessed (bucket 0);*/
+  /* 
+   * Sanitize the hash/bucket id, by making it $SIZE number of digits long
+   * make sure that all buckets in the table can be accessed (bucket 0);
+   */
   while (bucket_id >= table_size) {
     bucket_id /= 10;
   }
+  bucket_id--;   
   /* add the item to the specified bucket */
   buckets[bucket_id]->insert(in_entry);
   elements++;
