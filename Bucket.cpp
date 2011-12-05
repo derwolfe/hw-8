@@ -6,7 +6,7 @@ Bucket::Bucket()
 {
   /*
    * IMPLEMENT ME
-   * Construct a new linked list.
+   * Construct a new linked list, point chain at it.
    */
   chain = new Linked_List;
 }

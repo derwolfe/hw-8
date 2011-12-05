@@ -22,17 +22,16 @@ using namespace std;
 /* constructor - allocates SIZE buckets, sets table size as an array, and elements */
 Hash_Table::Hash_Table(int size)
 {
-  Bucket* buck [size];
-  buckets = buck;
+  buckets = new Bucket[size];
   //buckets[size]; /* set the size of the array to hold buckets*/
   /* next, allocate memory for the buckets and shove them into the table
    * buckets* is an array of pointers to buckets.
    */
-  int i = 0;  
-  while (i <= size - 1) {
-    buckets[i] = new Bucket; 
-    i++;
-  }
+//  int i = 0;  
+//  while (i <= size - 1) {
+//    buckets[i] = new Bucket; 
+//    i++;
+//  }
   table_size = size;
   elements = 0;
 } 
@@ -64,7 +63,7 @@ void Hash_Table::insert(string first, string last, string number)
    * Sanitize the hash/bucket id, by making it $SIZE number of digits long
    * make sure that all buckets in the table can be accessed (bucket 0);
    */
-  buckets[bucket_id]->insert(in_entry);
+  buckets[bucket_id].insert(in_entry);
   elements++;
   return;
 }
@@ -80,19 +79,18 @@ void Hash_Table::search(string key, ostream& os)
    * entry's contens out. 
    */
   int bucket_id = SuperFastHash(key.c_str(), 10) % table_size;
-  PB_entry* result = buckets[bucket_id]->search(key); 
+  PB_entry* result = buckets[bucket_id].search(key); 
   if (result == NULL) {
     os << "Entry not found" << endl;
   } else if (result != NULL) {
     os << "Entry found!" << endl;
-    os << "Bucket: " << bucket_id << endl;
-    os << result << endl;
+    os << *result << endl;
   }
 }
 
 double Hash_Table::get_load_factor()
 {
-  return (elements / table_size); /* ex. 40 elements, 10 buckets, load factor of 4. */
+  return ((double)elements / (double)table_size); /* ex. 40 elements, 10 buckets, load factor of 4. */
 }
 
 ostream& operator<<(ostream &os, Hash_Table &in_table)
@@ -100,7 +98,8 @@ ostream& operator<<(ostream &os, Hash_Table &in_table)
   int inc = 0;
   while (inc < in_table.table_size) { 
     /* use the overloaded output operator from bucket */
-    os << in_table.buckets[inc]; 
+    os << "Bucket: " << inc << endl;
+    os << in_table.buckets[inc] << endl; 
     inc++;
   }
   return os;

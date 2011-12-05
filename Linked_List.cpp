@@ -67,17 +67,22 @@ void Linked_List::sorted_insert(PB_entry* in_entry)
   Node* check = head;
   Node* prev  = NULL;
   
-  size++;
   
   while (check != NULL) {
+    /* if items are equal, don't add, end the loop without making any changes
+     */
+    if (in_entry->get_key().compare(check->entry->get_key()) == 0) {
+      return;
+    } 
     /* Change this to last_name to test for name
      * if the new entry is LESS than or EQUAL to the current entry, insert it.*/
-    if (in_entry->get_key().compare(check->entry->get_key()) <= 0) { 
+    if (in_entry->get_key().compare(check->entry->get_key()) < 0) { 
       break;
     } // otherwise, keep a trail.
     prev = check;
     check = check->next;
   }
+  size++;
   if (prev == NULL) { // being inserted at the head
     cur->next = head;
     head = cur;
