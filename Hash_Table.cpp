@@ -1,4 +1,5 @@
 #include <cstddef>
+#include <math.h>
 #include "Hash_Table.h"
 #include "PB_entry.h"
 
@@ -28,6 +29,7 @@ Hash_Table::Hash_Table(int size)
   int i = 0;  
   while (i <= size - 1) {
     buckets[i] = new Bucket; 
+    i++;
   }
   table_size = size;
   elements = 0;
@@ -53,8 +55,13 @@ void Hash_Table::insert(string first, string last, string number)
    * to be used. 
    */
   PB_entry* in_entry = new PB_entry(first, last, number);
-
-  int bucket_id = SuperFastHash(number.c_str(), 10);
+   /* this shouldn't be necessary - the goal is to get the right amount of digits for the array */  
+  int bucket_id = fabs(SuperFastHash(number.c_str(), 10));
+  /* sanitize the hash/bucket id, by making it $SIZE number of digits long */
+  bucket_id--; /* make sure that all buckets in the table can be accessed (bucket 0);*/
+  while (bucket_id >= table_size) {
+    bucket_id /= 10;
+  }
   /* add the item to the specified bucket */
   buckets[bucket_id]->insert(in_entry);
   elements++;
@@ -63,15 +70,21 @@ void Hash_Table::insert(string first, string last, string number)
   
 void Hash_Table::search(string key, ostream& os)
 {
-  int bucket_id = SuperFastHash(key.c_str(), 10); /* find the bucket where it should be */
-  /*use the bucket's search function and return the node
+  /* use the bucket's search function and return the node
    * this will call the LL retrieve function. If the item is not found, 
    * it will return a NULL ptr.
    *
    * if the item is found it will return a pointer to the PB_entry
    * The overloaded output operator for PB entry will spit the 
-   * entry's contens out.
-   * */
+   * entry's contens out. 
+   */
+  int bucket_id = fabs(SuperFastHash(key.c_str(), 10)); 
+  bucket_id--; /* this way bucket 0 will be accessed */  
+  /* this shouldn't be necessary - the goal is to get the right amount of digits for the array */ 
+  while (bucket_id >= table_size) {
+    bucket_id /= 10;
+  }
+ 
   PB_entry* result = buckets[bucket_id]->search(key); 
   if (result == NULL) {
     os << "Entry not found" << endl;
