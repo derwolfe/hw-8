@@ -7,7 +7,6 @@ void process_phonebook_db(string filename, Hash_Table* hash_table)
 {
   string firstname, lastname, number;
   ifstream fin(filename.c_str());
-  fin >> firstname >> lastname >> number;
 
   while (!fin.eof()) {
     /*
@@ -43,7 +42,7 @@ void process_phonebook_cmd(string filename, Hash_Table* hash_table)
 
         /*
          * IMPLEMENT ME
-         * search goes to output stream, should it be os/cout?
+         * the result of the search is fed to the output stream
          */
         hash_table->search(key, cout);
         break;
@@ -66,9 +65,9 @@ void process_phonebook_cmd(string filename, Hash_Table* hash_table)
 
         /*
          * IMPLEMENT ME
+         * call get_load_factor() method 
          */
-        load_factor = hash_table->get_load_factor();
-        cout << "Load factor: " << load_factor << endl;
+        cout << "Load factor: " << hash_table->get_load_factor() << endl;
         break;
       case INVALID:
         cout << "Error: command is invalid" << endl;

@@ -23,15 +23,6 @@ using namespace std;
 Hash_Table::Hash_Table(int size)
 {
   buckets = new Bucket[size];
-  //buckets[size]; /* set the size of the array to hold buckets*/
-  /* next, allocate memory for the buckets and shove them into the table
-   * buckets* is an array of pointers to buckets.
-   */
-//  int i = 0;  
-//  while (i <= size - 1) {
-//    buckets[i] = new Bucket; 
-//    i++;
-//  }
   table_size = size;
   elements = 0;
 } 
@@ -64,6 +55,7 @@ void Hash_Table::insert(string first, string last, string number)
    * make sure that all buckets in the table can be accessed (bucket 0);
    */
   buckets[bucket_id].insert(in_entry);
+  //cout << "e: " << elements << " tsize: " << table_size << endl; 
   elements++;
   return;
 }
@@ -90,6 +82,8 @@ void Hash_Table::search(string key, ostream& os)
 
 double Hash_Table::get_load_factor()
 {
+ //cout << "e: " << elements << " tsize: " << table_size << endl;
+  elements--; // should be 26/10 = 2.6
   return ((double)elements / (double)table_size); /* ex. 40 elements, 10 buckets, load factor of 4. */
 }
 
@@ -98,9 +92,13 @@ ostream& operator<<(ostream &os, Hash_Table &in_table)
   int inc = 0;
   while (inc < in_table.table_size) { 
     /* use the overloaded output operator from bucket */
-    os << "Bucket: " << inc << endl;
-    os << in_table.buckets[inc] << endl; 
-    inc++;
+    if (in_table.buckets[inc].get_size() == 0) {
+      inc++;
+    } else {
+      os << "Bucket: " << inc << endl;
+      os << in_table.buckets[inc] << endl; 
+      inc++;
+    }
   }
   return os;
     

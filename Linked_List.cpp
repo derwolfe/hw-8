@@ -67,7 +67,6 @@ void Linked_List::sorted_insert(PB_entry* in_entry)
   Node* check = head;
   Node* prev  = NULL;
   
-  
   while (check != NULL) {
     /* if items are equal, don't add, end the loop without making any changes
      */
