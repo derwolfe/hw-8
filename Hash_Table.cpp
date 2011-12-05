@@ -22,6 +22,8 @@ using namespace std;
 /* constructor - allocates SIZE buckets, sets table size as an array, and elements */
 Hash_Table::Hash_Table(int size)
 {
+  Bucket* buck [size];
+  buckets = buck;
   //buckets[size]; /* set the size of the array to hold buckets*/
   /* next, allocate memory for the buckets and shove them into the table
    * buckets* is an array of pointers to buckets.
